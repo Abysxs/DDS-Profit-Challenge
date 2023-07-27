@@ -48,6 +48,39 @@ function step1(elements) {
   return sortedResult;
 }
 
+//Step 2: Return an object with element counts and indices
+function step2(elements) {
+  //Create an empty object to store the indices of each element
+  const indicesMap = {};
+
+  //Goes through each element and keeps track of their indices
+  elements.forEach((element, index) => {
+    if (!indicesMap[element]) {
+      indicesMap[element] = [index];
+    } else {
+      indicesMap[element].push(index);
+    }
+  });
+
+  return indicesMap;
+}
+
+//Step 3: Combine the results from Step 1 and Step 2
+function step3(step1Result, step2Result) {
+  //This will store the combined result
+  const combinedResult = {};
+
+  //Loop through the unique elements in step1Result
+  for (const key in step1Result) {
+    combinedResult[key] = {
+      count: step1Result[key],
+      indices: step2Result[key],
+    };
+  }
+
+  return combinedResult;
+}
+
 //Main function (performs the entire process)
 (async () => {
   //Verify if the script is called with the right number of arguments
@@ -63,6 +96,15 @@ function step1(elements) {
     //Step 1: Read the input file and filter valid elements
     const elements = await readInputFile(inputFile);
 
+    //Step 2: Count occurrences of each element and store their indices
+    const resultStep1 = step1(elements);
+    const resultStep2 = step2(elements);
+
+    //Step 3: Combine the results of Step 1 and Step 2
+    const combinedResult = step3(resultStep1, resultStep2);
+
+    //Print the final output in a readable format
+    console.log(JSON.stringify(combinedResult, null, 2));
   } catch (error) {
     console.error('Error:', error.message);
   }
