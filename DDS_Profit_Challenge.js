@@ -68,14 +68,16 @@ function step2(elements) {
 //Step 3: Combine the results from Step 1 and Step 2
 function step3(step1Result, step2Result) {
   //This will store the combined result
-  const combinedResult = {};
+  const combinedResult = [];
 
   //Loop through the unique elements in step1Result
   for (const key in step1Result) {
-    combinedResult[key] = {
+    combinedResult.push({
+      [key]: {
       count: step1Result[key],
       indices: step2Result[key],
-    };
+      },
+    });
   }
 
   return combinedResult;
