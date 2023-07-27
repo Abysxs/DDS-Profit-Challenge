@@ -72,12 +72,10 @@ function step3(step1Result, step2Result) {
 
   //Loop through the unique elements in step1Result
   for (const key in step1Result) {
-    combinedResult.push({
-      [key]: {
+    combinedResult[key] = {
       count: step1Result[key],
       indices: step2Result[key],
-      },
-    });
+    };
   }
 
   return combinedResult;
@@ -105,8 +103,17 @@ function step3(step1Result, step2Result) {
     //Step 3: Combine the results of Step 1 and Step 2
     const combinedResult = step3(resultStep1, resultStep2);
 
+    const formattedResult = Object.entries(combinedResult)
+      .map(([key, value]) => ({
+        [key]: {
+          count: value.count,
+          indices: value.indices,
+        },
+      }))
+      .reduce((acc, curr) => Object.assign(acc, curr), {});
+
     //Print the final output in a readable format
-    console.log(JSON.stringify(combinedResult, null, 2));
+    console.log(JSON.stringify(formattedResult, null, 2));
   } catch (error) {
     console.error('Error:', error.message);
   }
